@@ -1,0 +1,13 @@
+steps:
+# Build the container image
+- name: 'gcr.io/cloud-builders/docker'
+  args: ['build', '-t', 'gcr.io/zoidata-367419/zoidata', '.']
+# Push the container image to Container Registry
+- name: 'gcr.io/cloud-builders/docker'
+  args: ['push', 'gcr.io/zoidata-367419/zoidata']
+# Deploy container image to Cloud Run
+- name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+  entrypoint: gcloud
+  args: ['run', 'deploy', 'zoidata', '--image', 'gcr.io/zoidata-367419/zoidata', '--region', 'us-central1', '--platform', 'managed','--port','80']
+images:
+- gcr.io/zoidata-367419/zoidata
